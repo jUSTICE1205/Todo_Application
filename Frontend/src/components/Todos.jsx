@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TodoTable from './TodoTable';
+import CustomModal from './CustomModal';
 
 function Todos() {
   const [todos, setTodos] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
   useEffect(() => {
     // Fetch todos from an API endpoint
@@ -17,13 +19,20 @@ function Todos() {
   }, []); // Empty dependency array to fetch todos only once on component mount
 
   const handleDeleteClick = (todoId) => {
-    // Implement delete logic
+    axios.post('http://localhost:8080/delete', { id: todoId })
+      .then(response => {
+        console.log(response.data.message); // Log success message if needed
+        // Update UI or perform any other actions after successful deletion
+      })
+      .catch(error => {
+        console.error('Error deleting todo:', error);
+        // Handle error, show error message, etc.
+      });
     console.log('Deleting todo with ID:', todoId);
   };
 
-  const handleCompleteClick = (todoId) => {
-    // Implement complete logic
-    console.log('Completing todo with ID:', todoId);
+  const handleUpdate = (record) => {
+    setSelectedRecord(record);
   };
 
   return (
@@ -32,7 +41,14 @@ function Todos() {
       <TodoTable
         todos={todos}
         handleDeleteClick={handleDeleteClick}
-        handleCompleteClick={handleCompleteClick}
+        handleUpdate={handleUpdate}
+      />
+      <CustomModal
+        title="Update Todo"
+        type="Update"
+        record={selectedRecord}
+        visible={selectedRecord !== null}
+        onCancel={() => setSelectedRecord(null)}
       />
     </div>
   );

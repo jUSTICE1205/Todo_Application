@@ -27,7 +27,7 @@ function App() {
     <>
     <Header />
      <CreateTodo />
-     <Todos  todos = {todos}/>
+     {/* <Todos  todos = {todos}/> */}
      <Footer />
     </>
   )
