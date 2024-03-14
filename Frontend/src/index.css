@@ -1,0 +1,9 @@
+header, footer {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+header {
+    font-size: 40px;
+}
